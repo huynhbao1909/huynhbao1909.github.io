@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <title>Hồ cá vui nhộn</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-image: url('images/san.jpg'); /* Cảnh nền mặc định */
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        #content {
+            position: relative;
+            width: 800px;
+            height: 600px;
+        }
+
+        .swimmer, .bubble {
+            position: absolute;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        #shark {
+            left: 0;
+            top: 0;
+            z-index: 4;
+        }
+
+        #goldFishSchool {
+            left: 300px;
+            top: 100px;
+            z-index: 2;
+        }
+
+        #turtle {
+            left: 550px;
+            top: 100px;
+            z-index: 1;
+        }
+
+        #diver1, #diver2, #diver3 {
+            z-index: 3;
+        }
+
+        .bubble {
+            z-index: 1;
+        }
+
+        #shark img {
+            width: 350px;
+            height: auto;
+        }
+
+        #goldFishSchool img {
+            width: 150px;
+            height: auto;
+        }
+
+        #turtle img {
+            width: 300px;
+            height: auto;
+        }
+
+        #diver1 img,
+        #diver2 img,
+        #diver3 img {
+            width: 233px;
+            height: auto;
+        }
+
+        .bubble img {
+            width: 100px;
+            height: auto;
+        }
+
+        /* Nút giao diện */
+        .button {
+            position: absolute;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        #changeBackground {
+            top: 20px;
+            left: 20px;
+        }
+
+        #toggleMusic {
+            top: 20px;
+            left: 200px;
+        }
+
+        #changeSong {
+            top: 20px;
+            left: 380px;
+        }
+
+    </style>
+</head>
+<body>
+    <audio id="backgroundMusic" loop>
+        <source src="audio/noinaycoanh.mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
+    <audio id="secondSong" loop>
+        <source src="audio/songgio.mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
+
+    <!-- Các nút điều khiển -->
+    <button id="changeBackground" class="button">Chuyển đổi nền</button>
+    <button id="toggleMusic" class="button">Bật/Tắt Nhạc</button>
+    <button id="changeSong" class="button">Đổi nhạc</button>
+
+    <div id="content">
+        <div id="shark" class="swimmer">
+            <img src="images/shark.png" alt="Cá mập">
+        </div>
+        <div id="goldFishSchool" class="swimmer">
+            <img src="images/goldFishSchool.png" alt="Đàn cá vàng">
+        </div>
+        <div id="turtle" class="swimmer">
+            <img src="images/turtle.png" alt="Con rùa">
+        </div>
+        <div id="diver1" class="swimmer">
+            <img src="images/diver1.png" alt="Người lặn 1">
+        </div>
+        <div id="diver2" class="swimmer">
+            <img src="images/diver2.png" alt="Người lặn 2">
+        </div>
+        <div id="diver3" class="swimmer">
+            <img src="images/diver3.png" alt="Người lặn 3">
+        </div>
+    </div>
+
+    <script>
+        const backgrounds = ['images/san.jpg', 'images/san1.jpg', 'images/san3.jpg', 'images/mattrang.jpg'];
+        let currentBackground = 0;
+
+        document.getElementById('changeBackground').addEventListener('click', function() {
+            currentBackground = (currentBackground + 1) % backgrounds.length;
+            document.body.style.backgroundImage = `url('${backgrounds[currentBackground]}')`;
+        });
+
+        document.getElementById('toggleMusic').addEventListener('click', function() {
+            const music = document.getElementById('backgroundMusic');
+            const secondSong = document.getElementById('secondSong');
+            if (music.paused && secondSong.paused) {
+                music.play();
+            } else {
+                music.pause();
+                secondSong.pause();
+            }
+        });
+
+        document.getElementById('changeSong').addEventListener('click', function() {
+            const music = document.getElementById('backgroundMusic');
+            const secondSong = document.getElementById('secondSong');
+            if (!secondSong.paused) {
+                secondSong.pause();
+                music.play();
+            } else {
+                music.pause();
+                secondSong.play();
+            }
+        });
+
+        function createSwimmer(elementId, horizontalSpeed, verticalSpeed) {
+            const swimmer = document.getElementById(elementId);
+            let horizontalDirection = 1;
+            let verticalDirection = 1;
+            let horizontalPosition = parseFloat(swimmer.style.left) || 0;
+            let verticalPosition = parseFloat(swimmer.style.top) || 50;
+
+            function animate() {
+                horizontalPosition += horizontalDirection * horizontalSpeed;
+                swimmer.style.left = horizontalPosition + 'px';
+                verticalPosition += verticalDirection * verticalSpeed;
+                swimmer.style.top = verticalPosition + 'px';
+
+                if (horizontalPosition >= window.innerWidth - swimmer.offsetWidth || horizontalPosition <= 0) {
+                    horizontalDirection *= -1;
+                    swimmer.style.transform = horizontalDirection === 1 ? 'scaleX(1)' : 'scaleX(-1)';
+                }
+
+                if (verticalPosition >= window.innerHeight - swimmer.offsetHeight || verticalPosition <= 0) {
+                    verticalDirection *= -1;
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        function createBubble() {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            const img = document.createElement('img');
+            img.src = 'images/faintSchool.png';
+            img.alt = 'Bong bóng';
+            bubble.appendChild(img);
+            document.getElementById('content').appendChild(bubble);
+
+            let verticalPosition = Math.random() * window.innerHeight;
+            let horizontalPosition = Math.random() * window.innerWidth;
+
+            bubble.style.left = horizontalPosition + 'px';
+            bubble.style.top = verticalPosition + 'px';
+
+            const verticalSpeed = 1 + Math.random() * 3;
+
+            function animate() {
+                verticalPosition -= verticalSpeed;
+                bubble.style.top = verticalPosition + 'px';
+
+                if (verticalPosition < -bubble.offsetHeight) {
+                    verticalPosition = window.innerHeight + Math.random() * 100;
+                    horizontalPosition = Math.random() * window.innerWidth;
+                    bubble.style.left = horizontalPosition + 'px';
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        // Tạo nhiều bong bóng (50 bong bóng)
+        for (let i = 0; i < 50; i++) {
+            createBubble();
+        }
+
+        createSwimmer('shark', 5, 2);
+        createSwimmer('goldFishSchool', 2, 1);
+        createSwimmer('turtle', 1, 1);
+        createSwimmer('diver1', 3, 1);
+        createSwimmer('diver2', 4, 1);
+        createSwimmer('diver3', 2, 2);
+    </script>
+</body>
+</html>
+
