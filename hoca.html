@@ -7,7 +7,7 @@
         body {
             margin: 0;
             height: 100vh;
-            background-image: url('san.jpg');
+            background-image: url('images/san.jpg');
             background-size: cover;
             background-position: center;
             overflow: hidden;
@@ -116,15 +116,15 @@
 </head>
 <body>
     <audio id="backgroundMusic" loop>
-        <source src="noinaycoanh.mp3" type="audio/mpeg">
+        <source src="audio/noinaycoanh.mp3" type="audio/mpeg">
         Your browser does not support the audio tag.
     </audio>
     <audio id="secondSong" loop>
-        <source src="songgio.mp3" type="audio/mpeg">
+        <source src="audio/songgio.mp3" type="audio/mpeg">
         Your browser does not support the audio tag.
     </audio>
     <audio id="thirdSong" loop>
-        <source src="laudaitinhai.mp3" type="audio/mpeg">
+        <source src="audio/laudaitinhai.mp3" type="audio/mpeg">
         Your browser does not support the audio tag.
     </audio>
 
@@ -134,27 +134,27 @@
 
     <div id="content">
         <div id="shark" class="swimmer">
-            <img src="shark.png" alt="Cá mập">
+            <img src="images/shark.png" alt="Cá mập">
         </div>
         <div id="goldFishSchool" class="swimmer">
-            <img src="goldFishSchool.png" alt="Đàn cá vàng">
+            <img src="images/goldFishSchool.png" alt="Đàn cá vàng">
         </div>
         <div id="turtle" class="swimmer">
-            <img src="turtle.png" alt="Con rùa">
+            <img src="images/turtle.png" alt="Con rùa">
         </div>
         <div id="diver1" class="swimmer">
-            <img src="diver1.png" alt="Người lặn 1">
+            <img src="images/diver1.png" alt="Người lặn 1">
         </div>
         <div id="diver2" class="swimmer">
-            <img src="diver2.png" alt="Người lặn 2">
+            <img src="images/diver2.png" alt="Người lặn 2">
         </div>
         <div id="diver3" class="swimmer">
-            <img src="diver3.png" alt="Người lặn 3">
+            <img src="images/diver3.png" alt="Người lặn 3">
         </div>
     </div>
 
     <script>
-        const backgrounds = ['san.jpg', 'san1.jpg', 'san3.jpg', 'mattrang.jpg'];
+        const backgrounds = ['images/san.jpg', 'images/san1.jpg', 'images/san3.jpg', 'images/mattrang.jpg'];
         let currentBackground = 0;
 
         document.getElementById('changeBackground').addEventListener('click', function() {
@@ -182,8 +182,13 @@
 
        
         document.getElementById('changeSong').addEventListener('click', function() {
+           
             musicFiles[currentSong].pause();
+
+            
             currentSong = (currentSong + 1) % musicFiles.length;
+
+           
             musicFiles[currentSong].play();
         });
 
@@ -219,7 +224,7 @@
             const bubble = document.createElement('div');
             bubble.className = 'bubble';
             const img = document.createElement('img');
-            img.src = 'faintSchool.png';
+            img.src = 'images/faintSchool.png';
             img.alt = 'Bong bóng';
             bubble.appendChild(img);
             document.getElementById('content').appendChild(bubble);
@@ -248,6 +253,7 @@
             animate();
         }
 
+     
         for (let i = 0; i < 50; i++) {
             createBubble();
         }
