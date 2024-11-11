@@ -7,7 +7,7 @@
         body {
             margin: 0;
             height: 100vh;
-            background-image: url("images/san.jpg"); /* Cảnh nền mặc định */
+            background-image: url('images/san.jpg');
             background-size: cover;
             background-position: center;
             overflow: hidden;
@@ -78,29 +78,38 @@
             height: auto;
         }
 
-        /* Nút giao diện */
         .button {
             position: absolute;
             padding: 10px 20px;
-            background-color: rgba(255, 255, 255, 0.8);
+            color: #fff;  
             border: none;
             cursor: pointer;
             z-index: 5;
+            font-size: 16px;
+            border-radius: 5px;  
+            transition: background-color 0.3s ease;  
         }
 
         #changeBackground {
             top: 20px;
             left: 20px;
+            background-color: rgba(0, 128, 255, 0.8);  
         }
 
         #toggleMusic {
             top: 20px;
             left: 200px;
+            background-color: rgba(255, 165, 0, 0.8); 
         }
 
         #changeSong {
             top: 20px;
             left: 380px;
+            background-color: rgba(34, 193, 195, 0.8);  
+        }
+
+        .button:hover {
+            background-color: rgba(0, 0, 0, 0.6);
         }
 
     </style>
@@ -114,8 +123,11 @@
         <source src="audio/songgio.mp3" type="audio/mpeg">
         Your browser does not support the audio tag.
     </audio>
+    <audio id="thirdSong" loop>
+        <source src="audio/laudaitinhai.mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
 
-    <!-- Các nút điều khiển -->
     <button id="changeBackground" class="button">Chuyển đổi nền</button>
     <button id="toggleMusic" class="button">Bật/Tắt Nhạc</button>
     <button id="changeSong" class="button">Đổi nhạc</button>
@@ -150,27 +162,34 @@
             document.body.style.backgroundImage = `url('${backgrounds[currentBackground]}')`;
         });
 
+        let currentSong = 0; 
+
+        const musicFiles = [
+            document.getElementById('backgroundMusic'),  
+            document.getElementById('secondSong'),      
+            document.getElementById('thirdSong')        
+        ];
+
+        // Bật/Tắt nhạc
         document.getElementById('toggleMusic').addEventListener('click', function() {
-            const music = document.getElementById('backgroundMusic');
-            const secondSong = document.getElementById('secondSong');
-            if (music.paused && secondSong.paused) {
-                music.play();
+            const music = musicFiles[currentSong];
+            if (music.paused) {
+                music.play(); 
             } else {
-                music.pause();
-                secondSong.pause();
+                music.pause();  
             }
         });
 
+       
         document.getElementById('changeSong').addEventListener('click', function() {
-            const music = document.getElementById('backgroundMusic');
-            const secondSong = document.getElementById('secondSong');
-            if (!secondSong.paused) {
-                secondSong.pause();
-                music.play();
-            } else {
-                music.pause();
-                secondSong.play();
-            }
+           
+            musicFiles[currentSong].pause();
+
+            
+            currentSong = (currentSong + 1) % musicFiles.length;
+
+           
+            musicFiles[currentSong].play();
         });
 
         function createSwimmer(elementId, horizontalSpeed, verticalSpeed) {
@@ -205,7 +224,7 @@
             const bubble = document.createElement('div');
             bubble.className = 'bubble';
             const img = document.createElement('img');
-            img.src = "images/faintSchool.png";
+            img.src = 'images/faintSchool.png';
             img.alt = 'Bong bóng';
             bubble.appendChild(img);
             document.getElementById('content').appendChild(bubble);
@@ -234,7 +253,7 @@
             animate();
         }
 
-        // Tạo nhiều bong bóng (50 bong bóng)
+     
         for (let i = 0; i < 50; i++) {
             createBubble();
         }
