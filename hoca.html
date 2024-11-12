@@ -7,7 +7,7 @@
         body {
             margin: 0;
             height: 100vh;
-            background-image: url('images/san.jpg');
+            background-image: url('san.jpg'); /* Cảnh nền mặc định */
             background-size: cover;
             background-position: center;
             overflow: hidden;
@@ -78,83 +78,94 @@
             height: auto;
         }
 
+        /* Nút giao diện */
         .button {
             position: absolute;
             padding: 10px 20px;
-            color: #fff;  
+            background-color: rgba(255, 255, 255, 0.8); /* Màu nền mặc định */
             border: none;
             cursor: pointer;
             z-index: 5;
             font-size: 16px;
-            border-radius: 5px;  
-            transition: background-color 0.3s ease;  
+            border-radius: 5px; /* Thêm bo góc cho các nút */
+            transition: background-color 0.3s ease; /* Thêm hiệu ứng chuyển màu nền */
         }
 
+        /* Nút Chuyển đổi nền */
         #changeBackground {
             top: 20px;
             left: 20px;
-            background-color: rgba(0, 128, 255, 0.8);  
+            background-color: #2ecc71; /* Màu nền ban đầu của nút */
+            color: #fff; /* Màu chữ trắng */
         }
 
+        #changeBackground:hover {
+            background-color: #27ae60; /* Màu nền khi hover */
+        }
+
+        /* Nút Bật/Tắt nhạc */
         #toggleMusic {
             top: 20px;
             left: 200px;
-            background-color: rgba(255, 165, 0, 0.8); 
+            background-color: #3498db; /* Màu nền ban đầu của nút */
+            color: #fff; /* Màu chữ trắng */
         }
 
+        #toggleMusic:hover {
+            background-color: #2980b9; /* Màu nền khi hover */
+        }
+
+        /* Nút Đổi nhạc */
         #changeSong {
             top: 20px;
             left: 380px;
-            background-color: rgba(34, 193, 195, 0.8);  
+            background-color: #f39c12; /* Màu nền ban đầu của nút */
+            color: #fff; /* Màu chữ trắng */
         }
 
-        .button:hover {
-            background-color: rgba(0, 0, 0, 0.6);
+        #changeSong:hover {
+            background-color: #e67e22; /* Màu nền khi hover */
         }
-
     </style>
 </head>
 <body>
     <audio id="backgroundMusic" loop>
-        <source src="audio/noinaycoanh.mp3" type="audio/mpeg">
+        <source src="noinaycoanh.mp3" type="audio/mpeg">
         Your browser does not support the audio tag.
     </audio>
     <audio id="secondSong" loop>
-        <source src="audio/songgio.mp3" type="audio/mpeg">
-        Your browser does not support the audio tag.
-    </audio>
-    <audio id="thirdSong" loop>
-        <source src="audio/laudaitinhai.mp3" type="audio/mpeg">
+        <source src="songgio.mp3" type="audio/mpeg">
         Your browser does not support the audio tag.
     </audio>
 
+    <!-- Các nút điều khiển -->
     <button id="changeBackground" class="button">Chuyển đổi nền</button>
     <button id="toggleMusic" class="button">Bật/Tắt Nhạc</button>
     <button id="changeSong" class="button">Đổi nhạc</button>
 
     <div id="content">
         <div id="shark" class="swimmer">
-            <img src="images/shark.png" alt="Cá mập">
+            <img src="shark.png" alt="Cá mập">
         </div>
         <div id="goldFishSchool" class="swimmer">
-            <img src="images/goldFishSchool.png" alt="Đàn cá vàng">
+            <img src="goldFishSchool.png" alt="Đàn cá vàng">
         </div>
         <div id="turtle" class="swimmer">
-            <img src="images/turtle.png" alt="Con rùa">
+            <img src="turtle.png" alt="Con rùa">
         </div>
         <div id="diver1" class="swimmer">
-            <img src="images/diver1.png" alt="Người lặn 1">
+            <img src="diver1.png" alt="Người lặn 1">
         </div>
         <div id="diver2" class="swimmer">
-            <img src="images/diver2.png" alt="Người lặn 2">
+            <img src="diver2.png" alt="Người lặn 2">
         </div>
         <div id="diver3" class="swimmer">
-            <img src="images/diver3.png" alt="Người lặn 3">
+            <img src="diver3.png" alt="Người lặn 3">
         </div>
     </div>
 
     <script>
-        const backgrounds = ['images/san.jpg', 'images/san1.jpg', 'images/san3.jpg', 'images/mattrang.jpg'];
+        const backgrounds = ['san.jpg', 'san1.jpg', 'san3.jpg', 'mattrang.jpg'];
         let currentBackground = 0;
 
         document.getElementById('changeBackground').addEventListener('click', function() {
@@ -162,34 +173,27 @@
             document.body.style.backgroundImage = `url('${backgrounds[currentBackground]}')`;
         });
 
-        let currentSong = 0; 
-
-        const musicFiles = [
-            document.getElementById('backgroundMusic'),  
-            document.getElementById('secondSong'),      
-            document.getElementById('thirdSong')        
-        ];
-
-        // Bật/Tắt nhạc
         document.getElementById('toggleMusic').addEventListener('click', function() {
-            const music = musicFiles[currentSong];
-            if (music.paused) {
-                music.play(); 
+            const music = document.getElementById('backgroundMusic');
+            const secondSong = document.getElementById('secondSong');
+            if (music.paused && secondSong.paused) {
+                music.play();
             } else {
-                music.pause();  
+                music.pause();
+                secondSong.pause();
             }
         });
 
-       
         document.getElementById('changeSong').addEventListener('click', function() {
-           
-            musicFiles[currentSong].pause();
-
-            
-            currentSong = (currentSong + 1) % musicFiles.length;
-
-           
-            musicFiles[currentSong].play();
+            const music = document.getElementById('backgroundMusic');
+            const secondSong = document.getElementById('secondSong');
+            if (!secondSong.paused) {
+                secondSong.pause();
+                music.play();
+            } else {
+                music.pause();
+                secondSong.play();
+            }
         });
 
         function createSwimmer(elementId, horizontalSpeed, verticalSpeed) {
@@ -224,7 +228,7 @@
             const bubble = document.createElement('div');
             bubble.className = 'bubble';
             const img = document.createElement('img');
-            img.src = 'images/faintSchool.png';
+            img.src = 'faintSchool.png';
             img.alt = 'Bong bóng';
             bubble.appendChild(img);
             document.getElementById('content').appendChild(bubble);
@@ -253,7 +257,7 @@
             animate();
         }
 
-     
+        // Tạo nhiều bong bóng (50 bong bóng)
         for (let i = 0; i < 50; i++) {
             createBubble();
         }
@@ -267,3 +271,4 @@
     </script>
 </body>
 </html>
+
